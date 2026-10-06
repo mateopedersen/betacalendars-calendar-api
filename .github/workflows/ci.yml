@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run openapi:check
+      - run: npm run postman:check
+      - run: npm run links:check
+      - run: npm run build
+      - name: Scan repository for likely credentials
+        run: |
+          if grep -RInE '(AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9_-]{20,}|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)' --exclude-dir=.git --exclude='package-lock.json' .; then
+            echo 'Potential credential pattern found.'
+            exit 1
+          fi
+      - name: Check canonical links have no tracking query
+        run: |
+          if grep -RInE 'betacalendars\.com/[^" ]*[?&](utm_|ref=|source=)' README.md openapi.yaml postman; then exit 1; fi

@@ -1,0 +1,1994 @@
+{
+  "info": {
+    "name": "BetaCalendars Printable Calendar API Reference",
+    "description": "# API Reference\n\nAll endpoints are public, stateless, read-only HTTP GET resources. No API key, cookie, or user account is required. The canonical production base URL is https://api.betacalendars.com. Responses use application/json.\n\nCalendar years are supported from 1 through 9999. The 120-month inclusive range cap keeps responses bounded. Invalid input returns a structured JSON 4xx error.\n\nMonth and layout endpoints compute their values from Gregorian arithmetic; they do not scrape or depend on the human-readable references. The references are static canonical links.\n\nProject: https://www.betacalendars.com/",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "System",
+      "description": "",
+      "item": [
+        {
+          "name": "01 Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ],
+              "query": []
+            }
+          },
+          "response": [
+            {
+              "name": "Successful response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health"
+                  ],
+                  "query": []
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"ok\",\n  \"service\": \"betacalendars-calendar-api\"\n}\n"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.status).to.eql(\"ok\");",
+                  "pm.expect(body.service).to.eql(\"betacalendars-calendar-api\");"
+                ]
+              }
+            }
+          ],
+          "description": "Confirm the read-only calendar API is reachable. No credentials are required. A successful response identifies only the service and health state."
+        }
+      ]
+    },
+    {
+      "name": "Months",
+      "description": "",
+      "item": [
+        {
+          "name": "Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/1?weekStart=monday&gridMode=natural&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "natural",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/month/2027/1?weekStart=monday&gridMode=natural&adjacentDays=include",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "month",
+                    "2027",
+                    "1"
+                  ],
+                  "query": [
+                    {
+                      "key": "weekStart",
+                      "value": "monday",
+                      "description": "weekStart"
+                    },
+                    {
+                      "key": "gridMode",
+                      "value": "natural",
+                      "description": "gridMode"
+                    },
+                    {
+                      "key": "adjacentDays",
+                      "value": "include",
+                      "description": "adjacentDays"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"year\": 2027,\n  \"month\": 1,\n  \"monthName\": \"January\",\n  \"daysInMonth\": 31,\n  \"firstWeekday\": \"friday\",\n  \"lastWeekday\": \"sunday\",\n  \"weekStart\": \"monday\",\n  \"gridMode\": \"natural\",\n  \"rowCount\": 6,\n  \"leadingCellCount\": 4,\n  \"trailingCellCount\": 7,\n  \"weeks\": [],\n  \"reference\": {\n    \"title\": \"January Calendar\",\n    \"url\": \"https://www.betacalendars.com/january-calendar.html\"\n  }\n}\n"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.weeks.flat()).to.have.length(body.rowCount * 7);",
+                  "pm.expect(body.weeks.flat().filter((d) => d.kind === \"current\")).to.have.length(body.daysInMonth);"
+                ]
+              }
+            }
+          ],
+          "description": "Return a dated Gregorian month model with a configurable first weekday, row mode, and adjacent-day behavior."
+        },
+        {
+          "name": "Invalid month — structured 400 example",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/13",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "13"
+              ],
+              "query": []
+            }
+          },
+          "response": [
+            {
+              "name": "Structured input error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/month/2027/13",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "month",
+                    "2027",
+                    "13"
+                  ],
+                  "query": []
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": {\n    \"code\": \"invalid_request\",\n    \"message\": \"month must be an integer from 1 to 12\"\n  }\n}\n"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"invalid month returns 400\", () => pm.response.to.have.status(400));",
+                  "pm.expect(body.error.code).to.eql(\"invalid_request\");"
+                ]
+              }
+            }
+          ],
+          "description": "Demonstrate the standard JSON input error shape for an out-of-range month. This intentional example returns HTTP 400."
+        }
+      ]
+    },
+    {
+      "name": "Years",
+      "description": "",
+      "item": [
+        {
+          "name": "07 2027 Year Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/year/2027?weekStart=monday&gridMode=natural",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "year",
+                "2027"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "natural",
+                  "description": "gridMode"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.year).to.eql(2027);",
+                  "pm.expect(body.isLeapYear).to.eql(false);",
+                  "pm.expect(body.months).to.have.length(12);"
+                ]
+              }
+            }
+          ],
+          "description": "Get compact metadata for all twelve months of 2027 without the repeated day-cell payload."
+        }
+      ]
+    },
+    {
+      "name": "Ranges",
+      "description": "",
+      "item": [
+        {
+          "name": "05 November 2026 to February 2027 Range",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/range?from=2026-11&to=2027-02&weekStart=monday&gridMode=natural",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "range"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2026-11",
+                  "description": "from"
+                },
+                {
+                  "key": "to",
+                  "value": "2027-02",
+                  "description": "to"
+                },
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "natural",
+                  "description": "gridMode"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.count).to.eql(4);",
+                  "pm.expect(body.months.map((m) => `${m.year}-${String(m.month).padStart(2,\"0\")}`)).to.eql([\"2026-11\",\"2026-12\",\"2027-01\",\"2027-02\"]);"
+                ]
+              }
+            }
+          ],
+          "description": "Summarize a chronological range inclusive of both endpoint months. This four-month fixture crosses a year boundary; range limits are 120 months."
+        }
+      ]
+    },
+    {
+      "name": "Print Layout",
+      "description": "",
+      "item": [
+        {
+          "name": "03 January 2027 A4 Print Layout",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/print-layout/2027/1?paper=a4&orientation=portrait&weekStart=monday&gridMode=fixed-six-weeks&margin=10&headerHeight=20&weekdayHeaderHeight=10&notesHeight=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "print-layout",
+                "2027",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "paper",
+                  "value": "a4",
+                  "description": "paper"
+                },
+                {
+                  "key": "orientation",
+                  "value": "portrait",
+                  "description": "orientation"
+                },
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "margin",
+                  "value": "10",
+                  "description": "margin"
+                },
+                {
+                  "key": "headerHeight",
+                  "value": "20",
+                  "description": "headerHeight"
+                },
+                {
+                  "key": "weekdayHeaderHeight",
+                  "value": "10",
+                  "description": "weekdayHeaderHeight"
+                },
+                {
+                  "key": "notesHeight",
+                  "value": "0",
+                  "description": "notesHeight"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.paper.widthMm).to.eql(210);",
+                  "pm.expect(body.grid.columns).to.eql(7);",
+                  "pm.expect(body.grid.rows).to.eql(6);"
+                ]
+              }
+            }
+          ],
+          "description": "Calculate A4 portrait printable bounds and date-cell measurements in millimetres. Values are computed from paper dimensions, margin, header bands, and six calendar rows."
+        },
+        {
+          "name": "A4 Landscape Layout",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/print-layout/2027/1?paper=a4&orientation=landscape&weekStart=monday&gridMode=fixed-six-weeks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "print-layout",
+                "2027",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "paper",
+                  "value": "a4",
+                  "description": "paper"
+                },
+                {
+                  "key": "orientation",
+                  "value": "landscape",
+                  "description": "orientation"
+                },
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.orientation).to.eql(\"landscape\");",
+                  "pm.expect(body.paper.widthMm).to.eql(297);"
+                ]
+              }
+            }
+          ],
+          "description": "A4 landscape geometry. Rotating the sheet exchanges its width and height before margins and date cells are calculated."
+        }
+      ]
+    },
+    {
+      "name": "Blank Grids",
+      "description": "",
+      "item": [
+        {
+          "name": "04 Blank 6x7 Planner",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/blank-grid?rows=6&columns=7&paper=a4&orientation=portrait&margin=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "blank-grid"
+              ],
+              "query": [
+                {
+                  "key": "rows",
+                  "value": "6",
+                  "description": "rows"
+                },
+                {
+                  "key": "columns",
+                  "value": "7",
+                  "description": "columns"
+                },
+                {
+                  "key": "paper",
+                  "value": "a4",
+                  "description": "paper"
+                },
+                {
+                  "key": "orientation",
+                  "value": "portrait",
+                  "description": "orientation"
+                },
+                {
+                  "key": "margin",
+                  "value": "10",
+                  "description": "margin"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.rows).to.eql(6);",
+                  "pm.expect(body.columns).to.eql(7);",
+                  "pm.expect(body.cells).to.have.length(6);",
+                  "pm.expect(JSON.stringify(body)).not.to.include(\"date\");"
+                ]
+              }
+            }
+          ],
+          "description": "Create a date-free six-by-seven planning grid. Cells carry only row and column coordinates. Use the A4 measurements to plan printing.\n\nHuman-readable resource: [Blank Calendar](https://www.betacalendars.com/blank-calendar)."
+        }
+      ]
+    },
+    {
+      "name": "Topology",
+      "description": "",
+      "item": [
+        {
+          "name": "January 2027 Topology",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/topology/2027/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "topology",
+                "2027",
+                "1"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.fixedRowCount).to.eql(6);",
+                  "pm.expect(body.naturalRowCounts).to.have.property(\"monday\");"
+                ]
+              }
+            }
+          ],
+          "description": "Expose weekday start, month length, natural row counts for all seven week starts, fixed row count, leading offsets, and stable topology signature."
+        }
+      ]
+    },
+    {
+      "name": "Comparison",
+      "description": "",
+      "item": [
+        {
+          "name": "06 Compare Year Boundary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/compare?months=2026-11,2026-12,2027-01,2027-02&weekStart=monday&gridMode=natural",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "compare"
+              ],
+              "query": [
+                {
+                  "key": "months",
+                  "value": "2026-11,2026-12,2027-01,2027-02",
+                  "description": "months"
+                },
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "natural",
+                  "description": "gridMode"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.months).to.have.length(4);",
+                  "pm.expect(body.differences).to.have.length(4);"
+                ]
+              }
+            }
+          ],
+          "description": "Compare month structure across the 2026 to 2027 boundary without repeating full daily grids."
+        }
+      ]
+    },
+    {
+      "name": "Reference Resources",
+      "description": "",
+      "item": [
+        {
+          "name": "January Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/january",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "january"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/january-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical January printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "February Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/february",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "february"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/february-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical February printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "March Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/march",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "march"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/march-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical March printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "April Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/april",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "april"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/april-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical April printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "May Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/may",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "may"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/may-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical May printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "June Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/june",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "june"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/june-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical June printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "July Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/july",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "july"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/july-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical July printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "August Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/august",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "august"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/august-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical August printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "September Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/september",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "september"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/september-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical September printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "October Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/october",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "october"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/october-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical October printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "November Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/november",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "november"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/november-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical November printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "December Reference Resource",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/december",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "december"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/december-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical December printable calendar reference. This request returns metadata only and does not scrape the referenced page."
+        },
+        {
+          "name": "Blank Calendar Reference",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/references/blank-calendar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "references",
+                "blank-calendar"
+              ],
+              "query": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.url).to.eql(\"https://www.betacalendars.com/blank-calendar\");"
+                ]
+              }
+            }
+          ],
+          "description": "Resolve the canonical undated calendar resource. No page is fetched or scraped."
+        }
+      ]
+    },
+    {
+      "name": "2027 Month Examples",
+      "description": "",
+      "item": [
+        {
+          "name": "January 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/1?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(1);",
+                  "pm.expect(body.monthName).to.eql(\"January\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/january-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. January has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [January Calendar](https://www.betacalendars.com/january-calendar.html)."
+        },
+        {
+          "name": "February 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/2?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "2"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(2);",
+                  "pm.expect(body.monthName).to.eql(\"February\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/february-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. February has a computed 28-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [February Calendar](https://www.betacalendars.com/february-calendar.html)."
+        },
+        {
+          "name": "March 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/3?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "3"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(3);",
+                  "pm.expect(body.monthName).to.eql(\"March\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/march-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. March has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [March Calendar](https://www.betacalendars.com/march-calendar.html)."
+        },
+        {
+          "name": "April 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/4?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "4"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(4);",
+                  "pm.expect(body.monthName).to.eql(\"April\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/april-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. April has a computed 30-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [April Calendar](https://www.betacalendars.com/april-calendar.html)."
+        },
+        {
+          "name": "May 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/5?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "5"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(5);",
+                  "pm.expect(body.monthName).to.eql(\"May\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/may-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. May has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [May Calendar](https://www.betacalendars.com/may-calendar.html)."
+        },
+        {
+          "name": "June 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/6?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "6"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(6);",
+                  "pm.expect(body.monthName).to.eql(\"June\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/june-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. June has a computed 30-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [June Calendar](https://www.betacalendars.com/june-calendar.html)."
+        },
+        {
+          "name": "July 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/7?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "7"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(7);",
+                  "pm.expect(body.monthName).to.eql(\"July\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/july-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. July has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [July Calendar](https://www.betacalendars.com/july-calendar.html)."
+        },
+        {
+          "name": "August 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/8?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "8"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(8);",
+                  "pm.expect(body.monthName).to.eql(\"August\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/august-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. August has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [August Calendar](https://www.betacalendars.com/august-calendar.html)."
+        },
+        {
+          "name": "September 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/9?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "9"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(9);",
+                  "pm.expect(body.monthName).to.eql(\"September\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/september-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. September has a computed 30-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [September Calendar](https://www.betacalendars.com/september-calendar.html)."
+        },
+        {
+          "name": "October 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/10?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "10"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(10);",
+                  "pm.expect(body.monthName).to.eql(\"October\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/october-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. October has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [October Calendar](https://www.betacalendars.com/october-calendar.html)."
+        },
+        {
+          "name": "November 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/11?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "11"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(11);",
+                  "pm.expect(body.monthName).to.eql(\"November\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/november-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. November has a computed 30-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [November Calendar](https://www.betacalendars.com/november-calendar.html)."
+        },
+        {
+          "name": "December 2027 — Month Grid",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/month/2027/12?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "month",
+                "2027",
+                "12"
+              ],
+              "query": [
+                {
+                  "key": "weekStart",
+                  "value": "monday",
+                  "description": "weekStart"
+                },
+                {
+                  "key": "gridMode",
+                  "value": "fixed-six-weeks",
+                  "description": "gridMode"
+                },
+                {
+                  "key": "adjacentDays",
+                  "value": "include",
+                  "description": "adjacentDays"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "const body = pm.response.json();",
+                  "pm.expect(body.month).to.eql(12);",
+                  "pm.expect(body.monthName).to.eql(\"December\");",
+                  "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/december-calendar.html\");"
+                ]
+              }
+            }
+          ],
+          "description": "January through December fixture for the year 2027. December has a computed 31-day month and a fixed six-week Monday-first grid. The response contains the canonical month reference: [December Calendar](https://www.betacalendars.com/december-calendar.html)."
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.betacalendars.com",
+      "type": "string"
+    }
+  ]
+}

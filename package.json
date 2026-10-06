@@ -1,0 +1,21 @@
+{
+  "name": "betacalendars-calendar-api",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node --experimental-strip-types src/server.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "node scripts/lint.mjs",
+    "openapi:check": "node scripts/validate-openapi.mjs",
+    "postman:check": "node scripts/validate-postman.mjs",
+    "links:check": "node scripts/audit-links.mjs",
+    "build": "node --experimental-strip-types --check src/server.ts && node scripts/generate-postman.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.2"
+  }
+}

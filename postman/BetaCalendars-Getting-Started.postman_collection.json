@@ -1,0 +1,473 @@
+{
+  "info": {
+    "name": "BetaCalendars API — Getting Started & Examples",
+    "description": "# BetaCalendars Printable Calendar Geometry API\n\nA deterministic read-only API for Gregorian month grids, printable geometry, blank planning grids, bounded ranges, and calendar topology. It processes no events or personal data.\n\n## Quick start\n\n1. Set collection variable **baseUrl** to the deployed API origin.\n2. Send **01 Health Check**.\n3. Send **02 January 2027 Month Grid** and inspect the returned weeks.\n\nAuthentication: none. All requests are GET-only. Results are timezone-independent.\n\n## Response model\n\nMonth responses identify the Gregorian year/month, month length, first/last weekday, selected week start and grid mode, row count, leading/trailing cells, seven-cell rows, and one contextual canonical reference. Adjacent dates can be included or represented by null placeholders.\n\n## Print geometry\n\nThe print endpoint reports paper dimensions, printable bounds, header regions, grid dimensions, and computed cell area in millimetres. Supported presets are A4, US Letter, A5, and US Legal.\n\n## Calendar topology\n\nUse the year, range, topology, and comparison requests for compact summaries and regression fixtures. Ranges are limited to 120 months. Blank grids are undated and never invent dates.\n\nProject: https://www.betacalendars.com/\n\nBlank planning resource: https://www.betacalendars.com/blank-calendar",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Health Check",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ],
+          "query": []
+        }
+      },
+      "response": [
+        {
+          "name": "Successful response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ],
+              "query": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"ok\",\n  \"service\": \"betacalendars-calendar-api\"\n}\n"
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.status).to.eql(\"ok\");",
+              "pm.expect(body.service).to.eql(\"betacalendars-calendar-api\");"
+            ]
+          }
+        }
+      ],
+      "description": "Confirm the read-only calendar API is reachable. No credentials are required. A successful response identifies only the service and health state."
+    },
+    {
+      "name": "02 January 2027 Month Grid",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/v1/month/2027/1?weekStart=monday&gridMode=fixed-six-weeks&adjacentDays=include",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "month",
+            "2027",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "weekStart",
+              "value": "monday",
+              "description": "weekStart"
+            },
+            {
+              "key": "gridMode",
+              "value": "fixed-six-weeks",
+              "description": "gridMode"
+            },
+            {
+              "key": "adjacentDays",
+              "value": "include",
+              "description": "adjacentDays"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.month).to.eql(1);",
+              "pm.expect(body.year).to.eql(2027);",
+              "pm.expect(body.daysInMonth).to.eql(31);",
+              "pm.expect(body.rowCount).to.eql(6);",
+              "pm.expect(body.weekStart).to.eql(\"monday\");",
+              "pm.expect(body.reference.url).to.eql(\"https://www.betacalendars.com/january-calendar.html\");"
+            ]
+          }
+        }
+      ],
+      "description": "Build January 2027 as a six-row Monday-first grid. January has 31 days; the result has 6 rows and includes December/February adjacent dates.\n\nHuman-readable reference: [January Calendar](https://www.betacalendars.com/january-calendar.html)."
+    },
+    {
+      "name": "03 January 2027 A4 Print Layout",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/v1/print-layout/2027/1?paper=a4&orientation=portrait&weekStart=monday&gridMode=fixed-six-weeks&margin=10&headerHeight=20&weekdayHeaderHeight=10&notesHeight=0",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "print-layout",
+            "2027",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "paper",
+              "value": "a4",
+              "description": "paper"
+            },
+            {
+              "key": "orientation",
+              "value": "portrait",
+              "description": "orientation"
+            },
+            {
+              "key": "weekStart",
+              "value": "monday",
+              "description": "weekStart"
+            },
+            {
+              "key": "gridMode",
+              "value": "fixed-six-weeks",
+              "description": "gridMode"
+            },
+            {
+              "key": "margin",
+              "value": "10",
+              "description": "margin"
+            },
+            {
+              "key": "headerHeight",
+              "value": "20",
+              "description": "headerHeight"
+            },
+            {
+              "key": "weekdayHeaderHeight",
+              "value": "10",
+              "description": "weekdayHeaderHeight"
+            },
+            {
+              "key": "notesHeight",
+              "value": "0",
+              "description": "notesHeight"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.paper.widthMm).to.eql(210);",
+              "pm.expect(body.grid.columns).to.eql(7);",
+              "pm.expect(body.grid.rows).to.eql(6);"
+            ]
+          }
+        }
+      ],
+      "description": "Calculate A4 portrait printable bounds and date-cell measurements in millimetres. Values are computed from paper dimensions, margin, header bands, and six calendar rows."
+    },
+    {
+      "name": "04 Blank 6x7 Planner",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/v1/blank-grid?rows=6&columns=7&paper=a4&orientation=portrait&margin=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "blank-grid"
+          ],
+          "query": [
+            {
+              "key": "rows",
+              "value": "6",
+              "description": "rows"
+            },
+            {
+              "key": "columns",
+              "value": "7",
+              "description": "columns"
+            },
+            {
+              "key": "paper",
+              "value": "a4",
+              "description": "paper"
+            },
+            {
+              "key": "orientation",
+              "value": "portrait",
+              "description": "orientation"
+            },
+            {
+              "key": "margin",
+              "value": "10",
+              "description": "margin"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.rows).to.eql(6);",
+              "pm.expect(body.columns).to.eql(7);",
+              "pm.expect(body.cells).to.have.length(6);",
+              "pm.expect(JSON.stringify(body)).not.to.include(\"date\");"
+            ]
+          }
+        }
+      ],
+      "description": "Create a date-free six-by-seven planning grid. Cells carry only row and column coordinates. Use the A4 measurements to plan printing.\n\nHuman-readable resource: [Blank Calendar](https://www.betacalendars.com/blank-calendar)."
+    },
+    {
+      "name": "05 November 2026 to February 2027 Range",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/v1/range?from=2026-11&to=2027-02&weekStart=monday&gridMode=natural",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "range"
+          ],
+          "query": [
+            {
+              "key": "from",
+              "value": "2026-11",
+              "description": "from"
+            },
+            {
+              "key": "to",
+              "value": "2027-02",
+              "description": "to"
+            },
+            {
+              "key": "weekStart",
+              "value": "monday",
+              "description": "weekStart"
+            },
+            {
+              "key": "gridMode",
+              "value": "natural",
+              "description": "gridMode"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.count).to.eql(4);",
+              "pm.expect(body.months.map((m) => `${m.year}-${String(m.month).padStart(2,\"0\")}`)).to.eql([\"2026-11\",\"2026-12\",\"2027-01\",\"2027-02\"]);"
+            ]
+          }
+        }
+      ],
+      "description": "Summarize a chronological range inclusive of both endpoint months. This four-month fixture crosses a year boundary; range limits are 120 months."
+    },
+    {
+      "name": "06 Compare Year Boundary",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/v1/compare?months=2026-11,2026-12,2027-01,2027-02&weekStart=monday&gridMode=natural",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "compare"
+          ],
+          "query": [
+            {
+              "key": "months",
+              "value": "2026-11,2026-12,2027-01,2027-02",
+              "description": "months"
+            },
+            {
+              "key": "weekStart",
+              "value": "monday",
+              "description": "weekStart"
+            },
+            {
+              "key": "gridMode",
+              "value": "natural",
+              "description": "gridMode"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.months).to.have.length(4);",
+              "pm.expect(body.differences).to.have.length(4);"
+            ]
+          }
+        }
+      ],
+      "description": "Compare month structure across the 2026 to 2027 boundary without repeating full daily grids."
+    },
+    {
+      "name": "07 2027 Year Summary",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/v1/year/2027?weekStart=monday&gridMode=natural",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "year",
+            "2027"
+          ],
+          "query": [
+            {
+              "key": "weekStart",
+              "value": "monday",
+              "description": "weekStart"
+            },
+            {
+              "key": "gridMode",
+              "value": "natural",
+              "description": "gridMode"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"response is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+              "const body = pm.response.json();",
+              "pm.expect(body.year).to.eql(2027);",
+              "pm.expect(body.isLeapYear).to.eql(false);",
+              "pm.expect(body.months).to.have.length(12);"
+            ]
+          }
+        }
+      ],
+      "description": "Get compact metadata for all twelve months of 2027 without the repeated day-cell payload."
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.betacalendars.com",
+      "type": "string"
+    }
+  ]
+}
